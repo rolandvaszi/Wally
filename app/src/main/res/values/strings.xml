@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Wally</string>
+    <string name="btn_login_text">LOGIN</string>
+    <string name="btn_register_text">REGISTER</string>
+    <string name="btn_login">Login</string>
+    <string name="version_text">Version 1.0.0</string>
+    <string name="btn_confirm_text">CONFIRM</string>
+    <string name="wally_icon_text">Wally_icon</string>
 </resources>
