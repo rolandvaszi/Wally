@@ -6,8 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ConfirmActivity">
 
+    <TextView
+        android:id="@+id/user_number"
+        android:layout_width="217dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/edt_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/edt_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="232dp"
@@ -31,6 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
