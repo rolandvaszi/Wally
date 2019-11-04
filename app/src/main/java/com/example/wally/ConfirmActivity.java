@@ -61,9 +61,6 @@ public class ConfirmActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
     private  void verifyCode(String code){
