@@ -6,9 +6,32 @@
     tools:context=".OverviewFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+
     <TextView
+        android:id="@+id/bevetel_tv"
+        android:layout_width="410dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:text="Bevétel" />
+
+    <TextView
+        android:id="@+id/kiadas_tv"
+        android:layout_width="410dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="60dp"
+        android:text="Kiadás" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bev_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="300dp"
+        android:layout_marginTop="430dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/kiad_rv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="125dp"/>
 
 </FrameLayout>

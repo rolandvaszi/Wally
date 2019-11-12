@@ -6,9 +6,51 @@
     tools:context=".AddTransactionFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+
+    <Spinner
+        android:id="@+id/kiadbev_sp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"/>
+
+    <Spinner
+        android:id="@+id/kateg_sp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="90dp"/>
+
+    <EditText
+        android:id="@+id/ossz_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="145dp"
+        android:inputType="textPersonName"
+        android:text="Osszeg" />
+
+    <EditText
+        android:id="@+id/megj_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="300dp"
+        android:inputType="textPersonName"
+        android:text="Megjegyzés" />
+
+    <Button
+        android:id="@+id/date_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="150dp"
+        android:text="Datum" />
+
+    <Button
+        android:id="@+id/add_bt"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="300dp"
+        android:text="ADD" />
 </FrameLayout>
