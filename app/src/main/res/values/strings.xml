@@ -6,4 +6,11 @@
     <string name="version_text">Version 1.0.0</string>
     <string name="btn_confirm_text">CONFIRM</string>
     <string name="wally_icon_text">Wally_icon</string>
+    <string name="btn_sleect_wallet_text">Select Wallet</string>
+    <string name="btn_select_date_text">Select Date</string>
+    <string name="btn_overview_text">Overview</string>
+    <string name="btn_add_transaction_text">Add Transaction</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
