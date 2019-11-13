@@ -6,9 +6,35 @@
     tools:context=".TransactionsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <Button
+        android:id="@+id/search_bt"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:text="SEARCH" />
+
+    <Button
+        android:id="@+id/dp_bt"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="250dp"
+        android:text="DATE" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trans_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="567dp"
+        android:layout_marginTop="65dp" />
+
+    <Button
+        android:id="@+id/add_bt"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="300dp"
+        android:text="ADD" />
 
 </FrameLayout>
