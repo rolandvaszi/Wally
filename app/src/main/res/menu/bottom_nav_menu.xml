@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_overview"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_overview"
+        android:title="Overview"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_transactions"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_transactions"
+        android:title="Transactions"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_wallets"
+        android:enabled="true"
+        android:icon="@drawable/ic_action_wallets"
+        android:title="Wallets"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+
+</menu>

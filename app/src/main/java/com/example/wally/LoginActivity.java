@@ -41,4 +41,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onSkip(View v){
+        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainActivityIntent);
+    }
 }
