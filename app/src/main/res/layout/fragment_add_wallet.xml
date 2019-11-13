@@ -16,10 +16,10 @@
         android:layout_marginTop="250dp"
         android:layout_marginLeft="100dp"
         android:inputType="textPersonName"
-        android:hint="Pénztálca neve" />
+        android:hint="Wallet name" />
 
     <EditText
-        android:id="@+id/ossz_et"
+        android:id="@+id/balance_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"

@@ -9,48 +9,52 @@
 
 
     <Spinner
-        android:id="@+id/kiadbev_sp"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:id="@+id/incexp_sp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"/>
 
     <Spinner
-        android:id="@+id/kateg_sp"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="90dp"/>
+        android:id="@+id/categ_sp"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="110dp"/>
 
     <EditText
-        android:id="@+id/ossz_et"
+        android:id="@+id/balance_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_marginTop="145dp"
+        android:layout_marginTop="190dp"
+        android:layout_marginLeft="100dp"
         android:inputType="textPersonName"
-        android:text="Osszeg" />
+        android:hint="Balance" />
 
     <EditText
-        android:id="@+id/megj_et"
+        android:id="@+id/comment_et"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:ems="10"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginLeft="100dp"
         android:inputType="textPersonName"
-        android:text="Megjegyzés" />
+        android:hint="Comment" />
 
     <Button
         android:id="@+id/date_bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="150dp"
-        android:text="Datum" />
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginLeft="160dp"
+        android:text="Date" />
 
     <Button
         android:id="@+id/add_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="200dp"
         android:text="ADD" />
 </FrameLayout>
