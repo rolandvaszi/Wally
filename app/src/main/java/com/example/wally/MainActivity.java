@@ -23,15 +23,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.action_overview:
-                        Toast.makeText(MainActivity.this, "Overview", Toast.LENGTH_SHORT).show();
+                    case R.id.action_overview: {
+                        //Toast.makeText(MainActivity.this, "Overview", Toast.LENGTH_SHORT).show();
+
+                        FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
+                        frag_trans.replace(R.id.fragment_container,new OverviewFragment());
+                        frag_trans.commit();
+
                         break;
-                    case R.id.action_transactions:
-                        Toast.makeText(MainActivity.this, "Transactions", Toast.LENGTH_SHORT).show();
+                    }
+                    case R.id.action_transactions: {
+                        //Toast.makeText(MainActivity.this, "Transactions", Toast.LENGTH_SHORT).show();
+
+                        FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
+                        frag_trans.replace(R.id.fragment_container,new TransactionsFragment());
+                        frag_trans.commit();
+
                         break;
-                    case R.id.action_wallets:
-                        Toast.makeText(MainActivity.this, "Wallets", Toast.LENGTH_SHORT).show();
+                    }
+                    case R.id.action_wallets: {
+                        //Toast.makeText(MainActivity.this, "Wallets", Toast.LENGTH_SHORT).show();
+
+                        FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
+                        frag_trans.replace(R.id.fragment_container,new WalletsFragment());
+                        frag_trans.commit();
+
                         break;
+                    }
                 }
                 return false;
             }

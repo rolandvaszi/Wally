@@ -1,14 +1,20 @@
 package com.example.wally;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+
+import java.util.Calendar;
 
 public class AddWalletFragment extends Fragment {
     private Context context;
@@ -25,6 +31,20 @@ public class AddWalletFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_wallet, container, false);
 
+        // *** go back to WalletsFragment when user clicks Add ***
+
+        Button btn_add_wallet = v.findViewById(R.id.add_bt);
+        btn_add_wallet.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction frag_trans = getFragmentManager().beginTransaction();
+                frag_trans.replace(R.id.fragment_container,new WalletsFragment());
+                frag_trans.commit();
+            }
+        });
+
         return v;
     }
+
+
 }
