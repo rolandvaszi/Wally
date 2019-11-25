@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,13 +12,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wallets_rv"
         android:layout_width="match_parent"
-        android:layout_height="636dp" />
+        android:layout_height="636dp"
+        android:layout_marginBottom="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/add_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="320dp"
-        android:text="+" />
-</FrameLayout>
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallets_rv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,30 +12,40 @@
         android:id="@+id/search_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:text="SEARCH" />
+        android:text="SEARCH"
+        app:layout_constraintBottom_toTopOf="@+id/trans_rv"
+        app:layout_constraintEnd_toStartOf="@+id/dp_bt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/dp_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="250dp"
-        android:text="DATE" />
+        android:layout_marginStart="16dp"
+        android:text="DATE"
+        app:layout_constraintBottom_toTopOf="@+id/trans_rv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search_bt"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trans_rv"
         android:layout_width="match_parent"
-        android:layout_height="567dp"
-        android:layout_marginTop="65dp" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bt" />
 
     <Button
         android:id="@+id/add_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="300dp"
-        android:text="ADD" />
+        android:text="ADD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trans_rv" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
