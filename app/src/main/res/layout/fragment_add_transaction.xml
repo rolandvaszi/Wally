@@ -13,63 +13,64 @@
         android:id="@+id/categ_sp"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="72dp"
-        app:layout_constraintBottom_toTopOf="@+id/balance_et"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/income_sp" />
 
     <EditText
         android:id="@+id/balance_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Balance"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/date_bt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categ_sp" />
 
     <EditText
         android:id="@+id/comment_et"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Comment"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/add_bt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_bt" />
 
     <Button
         android:id="@+id/date_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="16dp"
         android:text="Date"
-        app:layout_constraintBottom_toTopOf="@+id/comment_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/balance_et" />
 
     <Button
         android:id="@+id/add_bt"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginTop="16dp"
         android:text="ADD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comment_et" />
 
     <Spinner
         android:id="@+id/income_sp"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/categ_sp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
