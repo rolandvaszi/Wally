@@ -79,9 +79,10 @@ public class TransactionsFragment extends Fragment {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         final String phone_number = sharedPref.getString(getString(R.string.phone_number),"Phone Number");
+        final String wallet_name = sharedPref.getString(getString(R.string.wallet_name),"Wallet Name");
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = db.getReference().child(phone_number);
+        DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets");
         final ArrayList<Transaction> transactions = new ArrayList<>();
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -89,14 +90,14 @@ public class TransactionsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 transactions.clear();
                 double balance = 0;
-                for (DataSnapshot ds : dataSnapshot.child("Expenses").getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.child(wallet_name).child("Expenses").getChildren()) {
                     Transaction transaction = ds.getValue(Transaction.class);
                     transaction.setType("Expenses");
                     transaction.setId(ds.getKey());
                     transactions.add(transaction);
                     balance -= transaction.getAmount();
                 }
-                for (DataSnapshot ds : dataSnapshot.child("Incomes").getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.child(wallet_name).child("Incomes").getChildren()) {
                     Transaction transaction = ds.getValue(Transaction.class);
                     transaction.setType("Incomes");
                     transaction.setId(ds.getKey());

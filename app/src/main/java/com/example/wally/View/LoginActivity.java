@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.phone_number), "+40746071211");
+        editor.putString(getString(R.string.wallet_name), "Wallet1");
         editor.apply();
 
         Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);

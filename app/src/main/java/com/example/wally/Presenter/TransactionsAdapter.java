@@ -49,11 +49,11 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         DecimalFormat df2 = new DecimalFormat("#.##");
         if(transaction.getType().equals("Expenses")) {
             amount = "-" + df2.format(transaction.getAmount()) + " RON";
-            holder.tv_amount.setTextColor(Color.RED);
+            holder.tv_amount.setTextColor(Color.rgb(229,57,53));
         }
         else{
             amount = "+" + df2.format(transaction.getAmount()) + " RON";
-            holder.tv_amount.setTextColor(Color.BLUE);
+            holder.tv_amount.setTextColor(Color.WHITE);
         }
         holder.tv_amount.setText(amount);
 
