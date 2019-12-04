@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.example.wally.Presenter.TransactionsAdapter;
 import com.example.wally.R;
@@ -58,6 +59,29 @@ public class TransactionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_transactions, container, false);
 
+        // *** display wallet_name and balance for selected wallet ***
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);;
+        String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
+        final String wallet_name = sharedPref.getString(context.getString(R.string.wallet_name),"Wallet Name");
+
+        TextView tv_selected_wallet = ((MainActivity) context).findViewById(R.id.tv_selected_wallet);
+        tv_selected_wallet.setText(wallet_name);
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference amountRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name).child("Amount");
+        amountRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TextView tv_balance = ((MainActivity) context).findViewById(R.id.tv_balance);
+                String balance = dataSnapshot.getValue().toString() + " RON";
+                tv_balance.setText(balance);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         // *** set datepicker dialog ***
 
         final Calendar c = Calendar.getInstance();
@@ -77,11 +101,6 @@ public class TransactionsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        final String phone_number = sharedPref.getString(getString(R.string.phone_number),"Phone Number");
-        final String wallet_name = sharedPref.getString(getString(R.string.wallet_name),"Wallet Name");
-
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets");
         final ArrayList<Transaction> transactions = new ArrayList<>();
 

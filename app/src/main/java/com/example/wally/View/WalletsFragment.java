@@ -1,20 +1,39 @@
 package com.example.wally.View;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.wally.Model.Transaction;
+import com.example.wally.Presenter.TransactionsAdapter;
+import com.example.wally.Presenter.WalletsAdapter;
 import com.example.wally.R;
 import com.example.wally.View.AddWalletFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class WalletsFragment extends Fragment {
     private Context context;
@@ -45,14 +64,38 @@ public class WalletsFragment extends Fragment {
 
         // *** set wallet-recyclerview ***
 
-        RecyclerView recyclerView = v.findViewById(R.id.wallets_rv);
+        final RecyclerView recyclerView = v.findViewById(R.id.wallets_rv);
         recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
 
-        //mAdapter = new Adapter(dataList, context);
-        //recyclerView.setAdapter(mAdapter);
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        final String phone_number = sharedPref.getString(getString(R.string.phone_number),"Phone Number");
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets");
+        final ArrayList<String> wallets = new ArrayList<>();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                wallets.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String wallet_name = ds.getKey(); //the wallet_name is the key
+                    wallets.add(wallet_name);
+                }
+
+                Collections.sort(wallets);
+                RecyclerView.Adapter adapter = new WalletsAdapter(context, wallets);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(layoutManager);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return v;
     }
