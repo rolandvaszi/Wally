@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import com.example.wally.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -83,5 +85,24 @@ public class MainActivity extends AppCompatActivity {
                 });
         AlertDialog alert = alertDialog.create();
         alert.show();
+    }
+
+    public ArrayList<String> getIncomeCategories(){
+        ArrayList<String> income_categories = new ArrayList<>();
+        income_categories.add("Gift");
+        income_categories.add("Salary");
+        return income_categories;
+    }
+
+    public ArrayList<String> getExpenseCategories(){
+        ArrayList<String> expense_categories = new ArrayList<>();
+        expense_categories.add("Gift");
+        expense_categories.add("Medicine");
+        expense_categories.add("Shopping");
+        expense_categories.add("Bills");
+        expense_categories.add("Groceries");
+        expense_categories.add("Travel");
+        expense_categories.add("Entertainment");
+        return expense_categories;
     }
 }

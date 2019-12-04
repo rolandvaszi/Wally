@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,16 +90,19 @@ public class TransactionsFragment extends Fragment {
         int startYear = c.get(Calendar.YEAR);
         int startMonth = c.get(Calendar.MONTH);
         int startDay = c.get(Calendar.DAY_OF_MONTH);
+        //final String[] MONTH = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(context, dateSetListener, startYear, startMonth, startDay);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date = year + "." + (monthOfYear + 1) + "." + dayOfMonth;
+            }
+        }, startYear, startMonth, startDay);
 
-        // *** open AddTransactionFragment when user clicks Add ***
 
         // *** set transacton-recyclerview ***
 
         final RecyclerView recyclerView = v.findViewById(R.id.trans_rv);
-
-        // must set because ..
         recyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -199,18 +204,4 @@ public class TransactionsFragment extends Fragment {
         });
         return v;
     }
-
-
-    // *** on date set -> set date as the button's text ***
-
-    DatePickerDialog.OnDateSetListener dateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker view, int year, int month, int day) {
-                    View v = getView();
-                    Button btn_date = v.findViewById(R.id.fab_add3);
-                    String date = year + "-" + (month + 1) + "-" + day;
-                    btn_date.setText(date);
-                }
-            };
-
 }
