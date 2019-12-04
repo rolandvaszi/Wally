@@ -22,6 +22,7 @@ import com.example.wally.Presenter.TransactionsAdapter;
 import com.example.wally.Presenter.WalletsAdapter;
 import com.example.wally.R;
 import com.example.wally.View.AddWalletFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,7 +53,7 @@ public class WalletsFragment extends Fragment {
 
         // *** open AddWalletFragment when user clicks + ***
 
-        Button btn_add_wallet = v.findViewById(R.id.add_bt);
+        FloatingActionButton btn_add_wallet = v.findViewById(R.id.add_wallet_fab);
         btn_add_wallet.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

@@ -12,20 +12,19 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wallets_rv"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="23dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_bt"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/add_bt"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="+"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wallets_rv" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_wallet_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/exp_icon_5"
+        app:layout_constraintBottom_toBottomOf="@+id/wallets_rv"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

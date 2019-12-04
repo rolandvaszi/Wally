@@ -23,11 +23,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import static android.text.TextUtils.isEmpty;
 
 public class AddWalletFragment extends Fragment {
     private Context context;
-
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
