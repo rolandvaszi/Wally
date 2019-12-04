@@ -5,6 +5,7 @@
     <string name="phone_number">Phone Number</string>
     <string name="balance">0 RON</string>
     <string name="wallet_name">Wallet Name</string>
+    <string name="date">Date</string>
 
     <string name="btn_login_text">LOGIN</string>
     <string name="btn_register_text">REGISTER</string>
