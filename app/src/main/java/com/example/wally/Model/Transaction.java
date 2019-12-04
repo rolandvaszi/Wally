@@ -1,4 +1,4 @@
-package com.example.wally;
+package com.example.wally.Model;
 
 public class Transaction {
     private String type, date, category, comment, id;

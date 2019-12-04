@@ -1,4 +1,4 @@
-package com.example.wally;
+package com.example.wally.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.wally.R;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.wally;
+package com.example.wally.Presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wally.R;
+import com.example.wally.Model.Transaction;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

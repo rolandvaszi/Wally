@@ -1,4 +1,4 @@
-package com.example.wally;
+package com.example.wally.View;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.wally.R;
 
 public class OverviewFragment extends Fragment {
     private Context context;

@@ -1,10 +1,12 @@
-package com.example.wally;
+package com.example.wally.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.wally.R;
 
 public class SplashActivity extends AppCompatActivity {
 
