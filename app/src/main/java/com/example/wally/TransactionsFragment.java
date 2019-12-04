@@ -19,11 +19,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +45,9 @@ import static java.lang.Integer.parseInt;
 
 public class TransactionsFragment extends Fragment {
     private Context context;
-
+    FloatingActionButton fab_main, fab_add1, fab_add2, fab_add3;
+    Animation FabOpen, FabClose, FabClockWise, FabAntiClock;
+    boolean isOpen = false;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -64,29 +69,13 @@ public class TransactionsFragment extends Fragment {
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, dateSetListener, startYear, startMonth, startDay);
 
-        Button btn_date = v.findViewById(R.id.dp_bt);
-        btn_date.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                datePickerDialog.show();
-            }
-        });
-
         // *** open AddTransactionFragment when user clicks Add ***
-
-        Button btn_add_transaction = v.findViewById(R.id.add_bt);
-        btn_add_transaction.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction frag_trans = getFragmentManager().beginTransaction();
-                frag_trans.replace(R.id.fragment_container,new AddTransactionFragment());
-                frag_trans.commit();
-            }
-        });
 
         // *** set transacton-recyclerview ***
 
         final RecyclerView recyclerView = v.findViewById(R.id.trans_rv);
+
+        // must set because ..
         recyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -145,7 +134,51 @@ public class TransactionsFragment extends Fragment {
 
             }
         });
-
+        fab_main = (FloatingActionButton) v.findViewById(R.id.fab_main);
+        fab_add1 = (FloatingActionButton) v.findViewById(R.id.fab_add1);
+        fab_add2 = (FloatingActionButton) v.findViewById(R.id.fab_add2);
+        fab_add3 = (FloatingActionButton) v.findViewById(R.id.fab_add3);
+        FabOpen = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
+        FabClose = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+        FabClockWise = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_clockwise);
+        FabAntiClock = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_anticlock);
+        fab_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isOpen) {
+                    fab_add3.startAnimation(FabClose);
+                    fab_add2.startAnimation(FabClose);
+                    fab_add1.startAnimation(FabClose);
+                    fab_main.startAnimation(FabAntiClock);
+                    fab_add1.setClickable(false);
+                    fab_add2.setClickable(false);
+                    isOpen = false;
+                }
+                else {
+                    fab_add3.startAnimation(FabOpen);
+                    fab_add2.startAnimation(FabOpen);
+                    fab_add1.startAnimation(FabOpen);
+                    fab_main.startAnimation(FabClockWise);
+                    fab_add1.setClickable(true);
+                    fab_add2.setClickable(true);
+                    isOpen = true;
+                    fab_add1.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            FragmentTransaction frag_trans = getFragmentManager().beginTransaction();
+                            frag_trans.replace(R.id.fragment_container,new AddTransactionFragment());
+                            frag_trans.commit();
+                        }
+                    });
+                    fab_add3.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            datePickerDialog.show();
+                        }
+                    });
+                }
+            }
+        });
         return v;
     }
 
@@ -156,7 +189,7 @@ public class TransactionsFragment extends Fragment {
             new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     View v = getView();
-                    Button btn_date = v.findViewById(R.id.dp_bt);
+                    Button btn_date = v.findViewById(R.id.fab_add3);
                     String date = year + "-" + (month + 1) + "-" + day;
                     btn_date.setText(date);
                 }

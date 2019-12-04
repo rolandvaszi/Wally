@@ -19,6 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,11 +29,11 @@ public class ConfirmActivity extends AppCompatActivity {
     private EditText confirmCode;
     private TextView userNumber;
     private Button confirmButton;
-
+    private String phoneNumber;
 
     private String verificationID;
     private FirebaseAuth mAuth;
-
+    private DatabaseReference mRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,8 @@ public class ConfirmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_confirm);
 
         mAuth = FirebaseAuth.getInstance();
-
-        String phoneNumber = getIntent().getStringExtra("phonenumber");
-
+        phoneNumber = getIntent().getStringExtra("phonenumber");
+        mRef = FirebaseDatabase.getInstance().getReference();
         confirmCode = findViewById(R.id.edt_password);
         userNumber = findViewById(R.id.user_number);
         confirmButton = findViewById(R.id.confirm_button);
@@ -70,7 +71,8 @@ public class ConfirmActivity extends AppCompatActivity {
     }
 
     /**
-     * If the phone recognises the text message and the user checked the checkbox , the user will be proceded to the main screen
+     * If the phone recognises the text message and the user checked the checkbox ,
+     * the user will be proceded to the main screen
      * @param credential
      */
     private void signInWithCredential(PhoneAuthCredential credential) { //Sign in
@@ -81,10 +83,12 @@ public class ConfirmActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(ConfirmActivity.this, MainActivity.class);
+                            mRef.child(phoneNumber).child("Wallets").child("Wallet1").child("Amount").setValue(0);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(ConfirmActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(ConfirmActivity.this, task.getException().getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -132,6 +136,7 @@ public class ConfirmActivity extends AppCompatActivity {
                 verifyCode(code);
             }
         }
+
 
         /**
          * Sends a message if something went wrong.
