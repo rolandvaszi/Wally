@@ -122,7 +122,7 @@ public class ConfirmActivity extends AppCompatActivity {
                                                 startActivity(intent);
                                             }
                                             else{
-                                                //no wallet -> FisrtWalletActivity
+                                                //no wallet -> FirstWalletActivity
                                                 Intent intent = new Intent(ConfirmActivity.this, FirstWalletActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);

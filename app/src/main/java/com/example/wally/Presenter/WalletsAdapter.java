@@ -11,15 +11,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,12 +32,13 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class WalletsAdapter extends RecyclerView.Adapter<WalletsAdapter.WalletsViewHolder> {
-    private ArrayList<String> wallets;
+    private ArrayList<String> wallets, amounts;
     private Context context;
 
-    public WalletsAdapter(Context context, ArrayList<String> wallets) {
+    public WalletsAdapter(Context context, ArrayList<String> wallets, ArrayList<String> amounts) {
         this.context = context;
         this.wallets = wallets;
+        this.amounts = amounts;
     }
 
     @NonNull
@@ -45,11 +50,14 @@ public class WalletsAdapter extends RecyclerView.Adapter<WalletsAdapter.WalletsV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WalletsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WalletsViewHolder holder, final int position) {
         final String wallet_name = wallets.get(position);
         holder.tv_wallet_name.setText(wallet_name);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        final String amount = amounts.get(position) + " RON";
+        holder.tv_amount.setText(amount);
+
+        holder.layout_select_wallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -82,6 +90,38 @@ public class WalletsAdapter extends RecyclerView.Adapter<WalletsAdapter.WalletsV
                 frag_trans.commit();
             }
         });
+
+        holder.imgBtn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setMessage("Are you sure you want to delete this wallet?").setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                                String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
+
+                                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name);
+                                myRef.removeValue();
+
+                                wallets.remove(position);
+                                amounts.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, wallets.size());
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                AlertDialog alert = alertDialog.create();
+                alert.show();
+            }
+        });
     }
 
     @Override
@@ -91,11 +131,17 @@ public class WalletsAdapter extends RecyclerView.Adapter<WalletsAdapter.WalletsV
 
     public class WalletsViewHolder extends RecyclerView.ViewHolder {
         ImageView img_wallet_icon;
-        TextView tv_wallet_name;
+        TextView tv_wallet_name, tv_amount;
+        ImageButton imgBtn_delete;
+        ConstraintLayout layout_select_wallet;
+
         public WalletsViewHolder(@NonNull View itemView) {
             super(itemView);
             img_wallet_icon = itemView.findViewById(R.id.img_wallet_icon);
             tv_wallet_name = itemView.findViewById(R.id.tv_wallet_name);
+            tv_amount = itemView.findViewById(R.id.tv_amount);
+            imgBtn_delete = itemView.findViewById(R.id.imgBtn_delete);
+            layout_select_wallet = itemView.findViewById(R.id.layout_select_wallet);
         }
     }
 }

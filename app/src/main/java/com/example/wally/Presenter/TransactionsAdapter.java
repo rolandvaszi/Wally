@@ -1,6 +1,7 @@
 package com.example.wally.Presenter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,17 +18,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wally.R;
 import com.example.wally.Model.Transaction;
 import com.example.wally.View.MainActivity;
+import com.example.wally.View.TransactionsFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
+
+import static java.lang.Double.parseDouble;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionsViewHolder> {
     private ArrayList<Transaction> transactions;
@@ -69,16 +78,52 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         holder.imgbtn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-                String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setMessage("Are you sure you want to delete this transaction?").setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                                String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
+                                String wallet_name = sharedPref.getString(context.getString(R.string.wallet_name),"Wallet Name");
 
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = db.getReference().child(phone_number).child(transaction.getType()).child(transaction.getId());
-                myRef.removeValue();
+                                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                                final DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name);
 
-                transactions.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, transactions.size());
+                                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        String balanceStr = dataSnapshot.child("Amount").getValue().toString();
+                                        double balance = parseDouble(balanceStr);
+                                        if(transaction.getType().equals("Expenses")){
+                                            balance = balance + transaction.getAmount();
+                                        }
+                                        else {
+                                            balance = balance - transaction.getAmount();
+                                        }
+                                        myRef.child("Amount").setValue(balance);
+                                        myRef.child(transaction.getType()).child(transaction.getId()).removeValue();
+
+                                        transactions.remove(position);
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, transactions.size());
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                AlertDialog alert = alertDialog.create();
+                alert.show();
             }
         });
     }

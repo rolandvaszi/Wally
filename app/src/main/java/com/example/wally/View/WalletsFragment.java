@@ -77,18 +77,22 @@ public class WalletsFragment extends Fragment {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets");
         final ArrayList<String> wallets = new ArrayList<>();
+        final ArrayList<String> amounts = new ArrayList<>();
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 wallets.clear();
+                amounts.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String wallet_name = ds.getKey(); //the wallet_name is the key
+                    String amount = ds.child("Amount").getValue().toString();
                     wallets.add(wallet_name);
+                    amounts.add(amount);
                 }
 
-                Collections.sort(wallets);
-                RecyclerView.Adapter adapter = new WalletsAdapter(context, wallets);
+                //Collections.sort(wallets);
+                RecyclerView.Adapter adapter = new WalletsAdapter(context, wallets, amounts);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(layoutManager);
             }

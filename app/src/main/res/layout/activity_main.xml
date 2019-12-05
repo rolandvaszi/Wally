@@ -19,39 +19,47 @@
 
     <TextView
         android:id="@+id/tv_selected_wallet"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#00897B"
-        android:gravity="right|center_vertical"
+        android:gravity="left|center_vertical"
         android:text="WalletName:"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/tv_balance"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_edge_space"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_balance"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:background="#00897B"
         android:gravity="center|center_vertical"
         android:text="@string/balance"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/tv_edge_space2"
         app:layout_constraintStart_toEndOf="@+id/tv_selected_wallet"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/tv_edge_space"
+        android:layout_width="32dp"
+        android:layout_height="50dp"
+        android:background="#00897B"
+        app:layout_constraintEnd_toStartOf="@+id/tv_selected_wallet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_edge_space2"
+        android:layout_width="32dp"
         android:layout_height="50dp"
         android:background="#00897B"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_balance"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/fragment_container"

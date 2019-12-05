@@ -76,7 +76,7 @@ public class TransactionsFragment extends Fragment {
         tv_selected_wallet.setText(wallet_name);
 
         DatabaseReference amountRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name).child("Amount");
-        amountRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        amountRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TextView tv_balance = ((MainActivity) context).findViewById(R.id.tv_balance);
