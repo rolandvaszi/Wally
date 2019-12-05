@@ -24,7 +24,7 @@
     <string name="btn_skip_text">Skip</string>
     <string name="initial_balance_text">Initial Balance</string>
 
-    <array name="income_categories" >
+    <array name="income_categories">
         <item name="gift">Gift</item>
         <item name="salary">Salary</item>
     </array>
@@ -34,7 +34,7 @@
         <item name="expense">Expense</item>
     </array>
 
-    <array name="expenses_categories" >
+    <array name="expenses_categories">
         <item name="gift">Gift</item>
         <item name="medicine">Medicine</item>
         <item name="shop">Shopping</item>

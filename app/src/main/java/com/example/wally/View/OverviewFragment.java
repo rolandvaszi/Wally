@@ -118,7 +118,7 @@ public class OverviewFragment extends Fragment {
         return parseInt(date.substring(8,10));
     }
 
-    private void setIncomeRecyclerView(View v){
+    private void setIncomeRecyclerView(final View v){
         final ArrayList<String> income_categories = ((MainActivity) context).getIncomeCategories();
 
         final RecyclerView incomes_recyclerView = v.findViewById(R.id.income_rv);
@@ -148,6 +148,16 @@ public class OverviewFragment extends Fragment {
                     }
                 }
 
+                TextView tv_no_transactions = v.findViewById(R.id.tv_no_incomes);
+                if(incomes.size() == 0){
+                    //if there is no transaction to show, set tv_no_transactions visible
+                    tv_no_transactions.setVisibility(View.VISIBLE);
+                }
+                else{
+                    //if there are transactions, remove tv_no_transactions
+                    tv_no_transactions.setVisibility(View.GONE);
+                }
+
                 RecyclerView.Adapter adapter = new OverviewAdapter(context, incomes);
                 incomes_recyclerView.setAdapter(adapter);
                 incomes_recyclerView.setLayoutManager(incomes_layoutManager);
@@ -159,7 +169,7 @@ public class OverviewFragment extends Fragment {
         });
     }
 
-    private void setExpenseRecyclerView(View v){
+    private void setExpenseRecyclerView(final View v){
         final ArrayList<String> expense_categories = ((MainActivity) context).getExpenseCategories();
 
         final RecyclerView expenses_recyclerView = v.findViewById(R.id.expense_rv);
@@ -187,6 +197,16 @@ public class OverviewFragment extends Fragment {
                     if(amount != 0){
                         expenses.add(new OverviewItem(category, amount, "Expense"));
                     }
+                }
+
+                TextView tv_no_transactions = v.findViewById(R.id.tv_no_expenses);
+                if(expenses.size() == 0){
+                    //if there is no transaction to show, set tv_no_transactions visible
+                    tv_no_transactions.setVisibility(View.VISIBLE);
+                }
+                else{
+                    //if there are transactions, remove tv_no_transactions
+                    tv_no_transactions.setVisibility(View.GONE);
                 }
 
                 RecyclerView.Adapter adapter = new OverviewAdapter(context, expenses);

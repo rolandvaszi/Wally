@@ -165,7 +165,7 @@ public class TransactionsFragment extends Fragment {
         return v;
     }
 
-    private void setTransactionsRecyclerView(View v){
+    private void setTransactionsRecyclerView(final View v){
         final RecyclerView recyclerView = v.findViewById(R.id.trans_rv);
         recyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -196,6 +196,17 @@ public class TransactionsFragment extends Fragment {
                         balance += transaction.getAmount();
                     }
                 }
+
+                TextView tv_no_transactions = v.findViewById(R.id.tv_no_transactions);
+                if(transactions.size() == 0){
+                    //if there is no transaction to show, set tv_no_transactions visible
+                    tv_no_transactions.setVisibility(View.VISIBLE);
+                }
+                else{
+                    //if there are transactions, remove tv_no_transactions
+                    tv_no_transactions.setVisibility(View.GONE);
+                }
+
                 Collections.sort(transactions, new Comparator<Transaction>() {
                     @Override
                     public int compare(Transaction o1, Transaction o2) {

@@ -92,6 +92,34 @@
             app:layout_constraintStart_toEndOf="@+id/tv_date"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_no_incomes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="No transactions"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/expense_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/income_tv" />
+
+        <TextView
+            android:id="@+id/tv_no_expenses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="No transactions"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expense_tv" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
