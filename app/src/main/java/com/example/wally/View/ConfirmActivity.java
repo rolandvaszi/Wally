@@ -2,9 +2,12 @@ package com.example.wally.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +23,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -83,10 +89,58 @@ public class ConfirmActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(ConfirmActivity.this, MainActivity.class);
-                            mRef.child(phoneNumber).child("Wallets").child("Wallet1").child("Amount").setValue(0);
+                            /*Intent intent = new Intent(ConfirmActivity.this, MainActivity.class);
+                            mRef.child(phoneNumber).child("Wallets").child("Wallet1").child("Amount").setValue("0");
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            startActivity(intent);*/
+
+                           FirebaseDatabase db = FirebaseDatabase.getInstance();
+                           final DatabaseReference myRef = db.getReference();
+
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren())
+                                    {
+                                        if(ds.getKey().equals(phoneNumber)){
+                                            //phone_number exists
+
+                                            if(ds.child("Wallets").hasChildren()) {
+                                                //already has wallet -> MainActivity
+                                                String wallet_name = "";
+                                                for(DataSnapshot dsWallet : ds.child("Wallets").getChildren()){
+                                                    wallet_name = dsWallet.getKey(); // wallet name is the key
+                                                    break; // we need only one
+                                                }
+                                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ConfirmActivity.this);
+                                                SharedPreferences.Editor editor = sharedPref.edit();
+                                                editor.putString(getString(R.string.wallet_name), wallet_name);
+                                                editor.apply();
+
+                                                Intent intent = new Intent(ConfirmActivity.this, MainActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                            }
+                                            else{
+                                                //no wallet -> FisrtWalletActivity
+                                                Intent intent = new Intent(ConfirmActivity.this, FirstWalletActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                            }
+                                            return;
+                                        }
+                                    }
+                                    //phone number doesn't exist -> new user, no wallet
+                                    Intent intent = new Intent(ConfirmActivity.this, FirstWalletActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
+
                         } else {
                             Toast.makeText(ConfirmActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();

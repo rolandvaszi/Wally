@@ -9,22 +9,27 @@
         android:roundIcon="@mipmap/wally_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
-        <activity android:name=".View.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".View.ConfirmActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".View.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="portrait">
+        <activity android:name=".View.FirstWalletActivity"></activity>
+        <activity
+            android:name=".View.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".View.ConfirmActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.LoginActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".View.LoginActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -92,4 +92,17 @@
         app:layout_constraintVertical_bias="0.0"
         app:pressedTranslationZ="12dp" />
 
+    <TextView
+        android:id="@+id/tv_no_transactions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="No Transactions"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/trans_rv" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
