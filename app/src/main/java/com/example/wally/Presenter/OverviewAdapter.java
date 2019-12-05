@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wally.Model.OverviewItem;
 import com.example.wally.R;
+import com.example.wally.View.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,12 +37,12 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.Overvi
 
     @Override
     public void onBindViewHolder(@NonNull OverviewViewHolder holder, int position) {
+        final Map<String, Integer> images = ((MainActivity) context).getImages();
         String category = categories.get(position).getCategory();
         String amount = categories.get(position).getAmount() + " RON";
-
         holder.tv_category.setText(category);
         holder.tv_amount.setText(amount);
-
+        holder.img_category_icon.setBackgroundResource(images.get(holder.tv_category.getText().toString()));
         if(categories.get(position).getType().equals("Income")){
             holder.tv_amount.setTextColor(Color.WHITE);
         }

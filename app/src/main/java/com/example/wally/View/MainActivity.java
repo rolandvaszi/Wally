@@ -13,6 +13,8 @@ import com.example.wally.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,6 +105,21 @@ public class MainActivity extends AppCompatActivity {
         expense_categories.add("Groceries");
         expense_categories.add("Travel");
         expense_categories.add("Entertainment");
+        expense_categories.add("Transport");
         return expense_categories;
+    }
+
+    public Map<String, Integer> getImages() {
+        Map<String, Integer> images = new HashMap<>();
+        images.put("Gift", R.drawable.gift);
+        images.put("Medicine", R.drawable.medicine);
+        images.put("Shopping", R.drawable.shop);
+        images.put("Bills", R.drawable.taxes);
+        images.put("Groceries", R.drawable.grocery);
+        images.put("Travel", R.drawable.flight);
+        images.put("Salary", R.drawable.money);
+        images.put("Entertainment", R.drawable.bowling);
+        images.put("Transport", R.drawable.car);
+        return images;
     }
 }

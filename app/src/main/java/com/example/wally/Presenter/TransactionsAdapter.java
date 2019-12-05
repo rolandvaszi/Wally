@@ -2,25 +2,32 @@ package com.example.wally.Presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wally.R;
 import com.example.wally.Model.Transaction;
+import com.example.wally.View.MainActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.TransactionsViewHolder> {
     private ArrayList<Transaction> transactions;
@@ -41,10 +48,12 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull TransactionsViewHolder holder, final int position) {
+        final Map<String, Integer> images = ((MainActivity) context).getImages();
         final Transaction transaction = transactions.get(position);
         holder.tv_comment.setText(transaction.getComment());
         holder.tv_category.setText(transaction.getCategory());
         holder.tv_date.setText(transaction.getDate());
+        holder.img_category.setBackgroundResource(images.get(holder.tv_category.getText().toString()));
         String amount;
         DecimalFormat df2 = new DecimalFormat("#.##");
         if(transaction.getType().equals("Expenses")) {
