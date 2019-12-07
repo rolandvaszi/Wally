@@ -2,15 +2,19 @@ package com.example.wally.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,12 @@ public class ConfirmActivity extends AppCompatActivity {
     private String verificationID;
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
+    private ProgressBar progressBar;
+    private CheckBox checkBox;
+    private TextView termsncond;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +68,53 @@ public class ConfirmActivity extends AppCompatActivity {
 
         sendVerifivationCode(phoneNumber);
 
+        progressBar = findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.VISIBLE);
+        checkBox = findViewById(R.id.checkBox);
+
+
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String code = confirmCode.getText().toString().trim();
+                if (confirmCode.getText().toString().isEmpty() || confirmCode.getText().toString().length()<6){ //Verifying code authenticity
+                    confirmCode.setError("Please enter the code.");
+                    return;
+                }
 
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, code);
-                signInWithCredential(credential); //if code is ok, the we proceed to authentification
+                if(checkBox.isChecked()){
+                    String code = confirmCode.getText().toString().trim();
+
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, code);
+                    signInWithCredential(credential); //if code is ok, the we proceed to authentification
+                } else {
+                    Toast.makeText(ConfirmActivity.this,"Please agree the terms to continue.",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        termsncond = findViewById(R.id.termsNconditions);
+
+
+        termsncond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayterms();
+            }
+
+            private void displayterms() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+
+                ft.addToBackStack(null);
+
+                DialogFragment dialogFragment = new TermsAndCondFragment();
+                dialogFragment.show(getSupportFragmentManager(), "dialog");
             }
         });
 

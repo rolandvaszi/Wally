@@ -23,6 +23,8 @@
     <string name="btn_transactions_text">Transactions</string>
     <string name="btn_skip_text">Skip</string>
     <string name="initial_balance_text">Initial Balance</string>
+    <string name="terms">Terms and Conditions</string>
+    <string name="termsandcond">Insert our Terms and Conditions here.</string>
 
     <array name="income_categories">
         <item name="gift">Gift</item>

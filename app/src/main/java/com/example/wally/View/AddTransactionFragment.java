@@ -16,11 +16,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.wally.Model.DropDownItem;
 import com.example.wally.Model.Transaction;
 import com.example.wally.R;
 import com.google.firebase.database.DataSnapshot;
@@ -33,12 +37,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Double.parseDouble;
 
 public class AddTransactionFragment extends Fragment {
     private Context context;
     Spinner mainSpinner, categorySpinner;
+    Switch mySwitch;
 
 
     @Override
@@ -53,6 +59,21 @@ public class AddTransactionFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_add_transaction, container, false);
         final ArrayList<String> income_categories = ((MainActivity) context).getIncomeCategories();
         final ArrayList<String> expense_categories = ((MainActivity) context).getExpenseCategories();
+
+        final Map<String, Integer> imagesMap = ((MainActivity) context).getImages();
+        final Map.Entry<String,Integer> images = imagesMap.entrySet().iterator().next();
+
+        final ArrayList<DropDownItem> income_cat = new ArrayList<>();
+        final ArrayList<DropDownItem> expense_cat = new ArrayList<>();
+
+        for(String cat_name: income_categories){
+            income_cat.add(new DropDownItem(cat_name,imagesMap.get(cat_name)));
+        }
+
+        for(String cat_name: expense_categories){
+            expense_cat.add(new DropDownItem(cat_name,imagesMap.get(cat_name)));
+        }
+
         // *** set datepicker dialog ***
 
         final Calendar c = Calendar.getInstance();
@@ -88,35 +109,61 @@ public class AddTransactionFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
-        mainSpinner = (Spinner)v.findViewById(R.id.income_sp);
+        //mainSpinner = (Spinner)v.findViewById(R.id.income_sp);
+
+        mySwitch = (Switch)v.findViewById(R.id.switch1);
+
+
         categorySpinner = (Spinner) v.findViewById(R.id.categ_sp);
         final String mainCategories[] = {"Expense", "Income"};
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, mainCategories);
-        mainSpinner.setAdapter(adapter);
-        mainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //mainSpinner.setAdapter(adapter);
+
+        SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,expense_cat);
+        categorySpinner.setAdapter(adapter1);
+
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String itemSelect = mainCategories[position];
-                if(position == 1) {
-                    ArrayAdapter<String> adapter1 =
-                            new ArrayAdapter<>(getContext(),
-                                    android.R.layout.simple_spinner_dropdown_item, income_categories);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,income_cat);
+                    categorySpinner.setAdapter(adapter1);
+                }else {
+                    SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,expense_cat);
                     categorySpinner.setAdapter(adapter1);
                 }
-                if(position == 0) {
-                    ArrayAdapter<String> adapter2 =
-                            new ArrayAdapter<>(getContext(),
-                                    android.R.layout.simple_spinner_dropdown_item, expense_categories);
-                    categorySpinner.setAdapter(adapter2);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
+
+
+//        mainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String itemSelect = mainCategories[position];
+//                if(position == 1) {
+////                    ArrayAdapter<String> adapter1 =
+////                            new ArrayAdapter<>(getContext(),
+////                                    android.R.layout.simple_spinner_dropdown_item, income_categories);
+////                    categorySpinner.setAdapter(adapter1);
+//                    SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,income_cat);
+//                    categorySpinner.setAdapter(adapter1);
+//                }
+//                if(position == 0) {
+////                    ArrayAdapter<String> adapter2 =
+////                            new ArrayAdapter<>(getContext(),
+////                                    android.R.layout.simple_spinner_dropdown_item, expense_categories);
+////                    categorySpinner.setAdapter(adapter2);
+//                    SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,expense_cat);
+//                    categorySpinner.setAdapter(adapter1);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         // *** go back to TransactionsFragment when user clicks Add ***
 
@@ -141,14 +188,20 @@ public class AddTransactionFragment extends Fragment {
                     return;
                 }
 
+                DropDownItem selectedCategory;
+
                 final String transaction_type;
-                if(mainSpinner.getSelectedItem().toString().equals("Income")){
+                if(mySwitch.isChecked()){
                     transaction_type = "Incomes";
+                    selectedCategory = income_cat.get(categorySpinner.getSelectedItemPosition());
                 }
                 else{
                     transaction_type = "Expenses";
+                    selectedCategory = expense_cat.get(categorySpinner.getSelectedItemPosition());
                 }
-                String category = categorySpinner.getSelectedItem().toString();
+                //String category = categorySpinner.getSelectedItem().toString();
+
+                String category = selectedCategory.getText();
                 String comment = et_comment.getText().toString();
                 final double amountDouble = parseDouble(amount);
 
