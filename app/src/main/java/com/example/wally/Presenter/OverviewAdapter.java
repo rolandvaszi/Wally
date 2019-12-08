@@ -43,7 +43,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.Overvi
         holder.tv_category.setText(category);
 
         DecimalFormat df2 = new DecimalFormat("#.##");
-        String amount = "-" + df2.format(categories.get(position).getAmount()) + " RON";
+        String amount = df2.format(categories.get(position).getAmount()) + " RON";
         holder.tv_amount.setText(amount);
 
         holder.img_category_icon.setBackgroundResource(images.get(holder.tv_category.getText().toString()));

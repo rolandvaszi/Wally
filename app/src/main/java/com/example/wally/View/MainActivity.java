@@ -23,15 +23,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String phoneNumber = getIntent().getStringExtra("phonenumber");
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationBar);
-        bottomNavigationView.getMenu().getItem(0).setCheckable(false);
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationBar);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_overview: {
-                        //Toast.makeText(MainActivity.this, "Overview", Toast.LENGTH_SHORT).show();
+                        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                        bottomNavigationView.getMenu().getItem(1).setChecked(false);
+                        bottomNavigationView.getMenu().getItem(2).setChecked(false);
 
                         FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new OverviewFragment());
@@ -40,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.action_transactions: {
-                        //Toast.makeText(MainActivity.this, "Transactions", Toast.LENGTH_SHORT).show();
+                        bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                        bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                        bottomNavigationView.getMenu().getItem(2).setChecked(false);
 
                         FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new TransactionsFragment());
@@ -49,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.action_wallets: {
-                        //Toast.makeText(MainActivity.this, "Wallets", Toast.LENGTH_SHORT).show();
+                        bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                        bottomNavigationView.getMenu().getItem(1).setChecked(false);
+                        bottomNavigationView.getMenu().getItem(2).setChecked(true);
 
                         FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new WalletsFragment());
@@ -58,13 +63,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                return false;
+                return true;
             }
         });
 
-        FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
-        frag_trans.replace(R.id.fragment_container,new TransactionsFragment());
-        frag_trans.commit();
+        bottomNavigationView.setSelectedItemId(R.id.action_transactions);
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
 
     @Override

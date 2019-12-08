@@ -188,6 +188,13 @@ public class AddTransactionFragment extends Fragment {
                     return;
                 }
 
+                try {
+                    double d = Double.parseDouble(amount);
+                } catch (NumberFormatException nfe) {
+                    Toast.makeText(context, "Amount is not a number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 DropDownItem selectedCategory;
 
                 final String transaction_type;

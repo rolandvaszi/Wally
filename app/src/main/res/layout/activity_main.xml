@@ -13,6 +13,8 @@
         android:layout_height="50dp"
         android:background="#00897B"
         app:menu="@menu/bottom_nav_menu"
+        app:itemTextColor="@menu/selector_bottom_nav_bar"
+        app:itemIconTint="@menu/selector_bottom_nav_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -22,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="#00897B"
-        android:gravity="left|center_vertical"
+        android:gravity="center_vertical"
         android:text="WalletName:"
         android:textSize="24sp"
         android:textStyle="bold"

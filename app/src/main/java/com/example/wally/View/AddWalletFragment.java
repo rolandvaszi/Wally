@@ -55,6 +55,16 @@ public class AddWalletFragment extends Fragment {
                     return;
                 }
 
+                final String wallet_name = et_walletname.getText().toString();
+                final String balance = et_balance.getText().toString();
+
+                try {
+                    double d = Double.parseDouble(balance);
+                } catch (NumberFormatException nfe) {
+                    Toast.makeText(context, "Initial balance is not a number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                 String phone_number = sharedPref.getString(getString(R.string.phone_number),"Phone Number");
 
@@ -66,13 +76,13 @@ public class AddWalletFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot ds : dataSnapshot.getChildren())
                         {
-                            String walletname = ds.getKey();
-                            if(walletname.equals(et_walletname.getText().toString())){
+                            String ds_walletname = ds.getKey();
+                            if(ds_walletname.equals(wallet_name)){
                                 Toast.makeText(context, "This wallet-name already exists", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         }
-                        myRef.child(et_walletname.getText().toString()).child("Amount").setValue(et_balance.getText().toString());
+                        myRef.child(wallet_name).child("Amount").setValue(balance);
 
                         FragmentTransaction frag_trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new WalletsFragment());

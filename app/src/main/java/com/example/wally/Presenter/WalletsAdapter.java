@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -94,32 +95,52 @@ public class WalletsAdapter extends RecyclerView.Adapter<WalletsAdapter.WalletsV
         holder.imgBtn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                alertDialog.setMessage("Are you sure you want to delete this wallet?").setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-                                String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
 
-                                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name);
-                                myRef.removeValue();
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets");
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getChildrenCount() == 1){
+                            Toast.makeText(context, "You need at least one wallet. You can't remove this one.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        else{
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                            alertDialog.setMessage("Are you sure you want to delete this wallet?").setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                                            String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
 
-                                wallets.remove(position);
-                                amounts.remove(position);
-                                notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, wallets.size());
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                                            DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name);
+                                            myRef.removeValue();
 
-                            }
-                        });
-                AlertDialog alert = alertDialog.create();
-                alert.show();
+                                            wallets.remove(position);
+                                            amounts.remove(position);
+                                            notifyItemRemoved(position);
+                                            notifyItemRangeChanged(position, wallets.size());
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    });
+                            AlertDialog alert = alertDialog.create();
+                            alert.show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
     }
