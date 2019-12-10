@@ -3,7 +3,7 @@ package com.example.wally.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.wally.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,26 +31,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.concurrent.TimeUnit;
 
 public class ConfirmActivity extends AppCompatActivity {
 
     private EditText confirmCode;
-    private TextView userNumber;
-    private Button confirmButton;
     private String phoneNumber;
 
     private String verificationID;
     private FirebaseAuth mAuth;
-    private DatabaseReference mRef;
-    private ProgressBar progressBar;
     private CheckBox checkBox;
-    private TextView termsncond;
 
 
-
-
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,21 +51,25 @@ public class ConfirmActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         phoneNumber = getIntent().getStringExtra("phonenumber");
-        mRef = FirebaseDatabase.getInstance().getReference();
         confirmCode = findViewById(R.id.edt_password);
-        userNumber = findViewById(R.id.user_number);
-        confirmButton = findViewById(R.id.confirm_button);
+        TextView userNumber = findViewById(R.id.user_number);
+        Button confirmButton = findViewById(R.id.confirm_button);
 
         userNumber.setText("Your phone number: " + phoneNumber);
 
-        sendVerifivationCode(phoneNumber);
+        sendVerificationCode(phoneNumber);
 
-        progressBar = findViewById(R.id.progressbar);
+        ProgressBar progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.VISIBLE);
         checkBox = findViewById(R.id.checkBox);
 
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Setting click listener for the confirm button
+             * @param v
+             */
             @Override
             public void onClick(View v) {
 
@@ -82,29 +78,26 @@ public class ConfirmActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(checkBox.isChecked()){
+                if(checkBox.isChecked()) {
                     String code = confirmCode.getText().toString().trim();
 
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, code);
-                    signInWithCredential(credential); //if code is ok, the we proceed to authentification
+                    signInWithCredential(credential); //if code is ok, the we proceed to authentication
                 } else {
                     Toast.makeText(ConfirmActivity.this,"Please agree the terms to continue.",Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
-        termsncond = findViewById(R.id.termsNconditions);
-
-
-        termsncond.setOnClickListener(new View.OnClickListener() {
+        TextView transcend = findViewById(R.id.termsNconditions);
+        transcend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayterms();
+                displayTerms();
             }
 
-            private void displayterms() {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+            private void displayTerms() {
+                @SuppressLint("CommitTransaction") FragmentTransaction ft = getFragmentManager().beginTransaction();
                 Fragment prev = getFragmentManager().findFragmentByTag("dialog");
 
                 if (prev != null) {
@@ -123,41 +116,36 @@ public class ConfirmActivity extends AppCompatActivity {
     private  void verifyCode(String code){
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, code);
         signInWithCredential(credential); //if code is ok, the we proceed to authentification
-
     }
 
     /**
      * If the phone recognises the text message and the user checked the checkbox ,
-     * the user will be proceded to the main screen
+     * the user will be proceeded to the main screen
      * @param credential
      */
     private void signInWithCredential(PhoneAuthCredential credential) { //Sign in
-
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            /*Intent intent = new Intent(ConfirmActivity.this, MainActivity.class);
-                            mRef.child(phoneNumber).child("Wallets").child("Wallet1").child("Amount").setValue("0");
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);*/
-
-                           FirebaseDatabase db = FirebaseDatabase.getInstance();
-                           final DatabaseReference myRef = db.getReference();
-
+                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                            final DatabaseReference myRef = db.getReference();
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                /**
+                                 *
+                                 * @param dataSnapshot
+                                 */
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot ds : dataSnapshot.getChildren())
-                                    {
-                                        if(ds.getKey().equals(phoneNumber)){
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        if (ds.getKey().equals(phoneNumber)) {
                                             //phone_number exists
 
-                                            if(ds.child("Wallets").hasChildren()) {
+                                            if (ds.child("Wallets").hasChildren()) {
                                                 //already has wallet -> MainActivity
                                                 String wallet_name = "";
-                                                for(DataSnapshot dsWallet : ds.child("Wallets").getChildren()){
+                                                for (DataSnapshot dsWallet : ds.child("Wallets").getChildren()) {
                                                     wallet_name = dsWallet.getKey(); // wallet name is the key
                                                     break; // we need only one
                                                 }
@@ -169,8 +157,7 @@ public class ConfirmActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(ConfirmActivity.this, MainActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
-                                            }
-                                            else{
+                                            } else {
                                                 //no wallet -> FirstWalletActivity
                                                 Intent intent = new Intent(ConfirmActivity.this, FirstWalletActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -196,16 +183,14 @@ public class ConfirmActivity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
-
-
 
     /**
      * Sends verification code to the given number
      * @param number
      */
-
-    private void sendVerifivationCode(String number){
+    private void sendVerificationCode(String number){
         //progressBar.setVisibility(View.VISIBLE);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,
@@ -240,7 +225,6 @@ public class ConfirmActivity extends AppCompatActivity {
                 //verifyCode(code);
             }
         }
-
 
         /**
          * Sends a message if something went wrong.

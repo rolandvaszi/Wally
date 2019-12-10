@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.wally.R;
-
 import androidx.fragment.app.DialogFragment;
 
 public class TermsAndCondFragment extends DialogFragment {
@@ -21,9 +19,7 @@ public class TermsAndCondFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.termsandcond_fragment, container, false);
-
         getDialog().setTitle("Terms and Conditions");
-
         return v;
     }
 
@@ -31,7 +27,6 @@ public class TermsAndCondFragment extends DialogFragment {
      * Getting the screen resolution for the dialog
      * Setting the dialog size to match the resolution
      */
-
     @Override
     public void onStart() {
         super.onStart();

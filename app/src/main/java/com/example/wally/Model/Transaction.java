@@ -4,7 +4,9 @@ public class Transaction {
     private String type, date, category, comment, id;
     private double amount;
 
-    public Transaction(){}
+    public Transaction() {
+
+    }
 
     public Transaction(String type, String date, String category, double amount, String comment, String id) {
         this.type = type;

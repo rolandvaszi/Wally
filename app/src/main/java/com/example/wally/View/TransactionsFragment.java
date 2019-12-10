@@ -5,25 +5,19 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.wally.Presenter.TransactionsAdapter;
 import com.example.wally.R;
 import com.example.wally.Model.Transaction;
@@ -33,12 +27,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -49,13 +40,12 @@ public class TransactionsFragment extends Fragment {
     private Context context;
     private FirebaseDatabase db;
     private String phone_number, wallet_name, date;
-    private FloatingActionButton fab_main, fab_add1, fab_add2, fab_add3;
+    private FloatingActionButton fab_main, fab_add1, fab_add3;
     private Animation FabOpen, FabClose, FabClockWise, FabAntiClock;
     private boolean isOpen = false;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         context = getActivity();
     }
@@ -63,20 +53,23 @@ public class TransactionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_transactions, container, false);
-
+        //Getting database reference
         db = FirebaseDatabase.getInstance();
-
+        //Getting phone number and wallet
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);;
         phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
         wallet_name = sharedPref.getString(context.getString(R.string.wallet_name),"Wallet Name");
         date = sharedPref.getString(context.getString(R.string.date),"Date");
 
-        // *** display wallet_name and balance for selected wallet ***
+        //Display wallet_name and balance for selected wallet
         TextView tv_selected_wallet = ((MainActivity) context).findViewById(R.id.tv_selected_wallet);
         tv_selected_wallet.setText(wallet_name);
-
         DatabaseReference amountRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name).child("Amount");
         amountRef.addValueEventListener(new ValueEventListener() {
+            /**
+             * Getting balance
+             * @param dataSnapshot
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TextView tv_balance = ((MainActivity) context).findViewById(R.id.tv_balance);
@@ -89,61 +82,55 @@ public class TransactionsFragment extends Fragment {
             }
         });
 
-        // *** set datepicker dialog ***
-
+        //Set date picker dialog
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 String startYear = year + "";
                 String startMonth = (monthOfYear + 1) + "";
                 String startDay = dayOfMonth + "";
-                if(startDay.length() == 1){
+                if(startDay.length() == 1) {
                     startDay = "0" + startDay;
                 }
-                if(startMonth.length() == 1){
+                if(startMonth.length() == 1) {
                     startMonth = "0" + startMonth;
                 }
-
                 date = startYear + "." + startMonth + "." + startDay;
-
+                //Saving date to shared preferences
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.date), date);
                 editor.apply();
-
                 setTransactionsRecyclerView(v);
             }
         }, getYear(), getMonth() - 1, getDay());
-
         setTransactionsRecyclerView(v);
-
+        //Setting the floating action buttons and the animations
         fab_main = (FloatingActionButton) v.findViewById(R.id.fab_main);
         fab_add1 = (FloatingActionButton) v.findViewById(R.id.fab_add1);
-        fab_add2 = (FloatingActionButton) v.findViewById(R.id.fab_add2);
         fab_add3 = (FloatingActionButton) v.findViewById(R.id.fab_add3);
         FabOpen = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         FabClose = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
         FabClockWise = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_clockwise);
         FabAntiClock = AnimationUtils.loadAnimation(getContext(), R.anim.rotate_anticlock);
+        //Setting click listener for the main Fab to open/close
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isOpen) {
                     fab_add3.startAnimation(FabClose);
-                    fab_add2.startAnimation(FabClose);
                     fab_add1.startAnimation(FabClose);
                     fab_main.startAnimation(FabAntiClock);
                     fab_add1.setClickable(false);
-                    fab_add2.setClickable(false);
+                    fab_add3.setClickable(false);
                     isOpen = false;
                 }
                 else {
                     fab_add3.startAnimation(FabOpen);
-                    fab_add2.startAnimation(FabOpen);
                     fab_add1.startAnimation(FabOpen);
                     fab_main.startAnimation(FabClockWise);
                     fab_add1.setClickable(true);
-                    fab_add2.setClickable(true);
+                    fab_add3.setClickable(true);
                     isOpen = true;
                     fab_add1.setOnClickListener(new View.OnClickListener(){
                         @Override
@@ -165,19 +152,27 @@ public class TransactionsFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Populate recyclerView with transactions
+     * @param v
+     */
     private void setTransactionsRecyclerView(final View v){
         final RecyclerView recyclerView = v.findViewById(R.id.trans_rv);
         recyclerView.setHasFixedSize(true);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-
+        //Getting database reference
         DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets");
         final ArrayList<Transaction> transactions = new ArrayList<>();
-
         myRef.addValueEventListener(new ValueEventListener() {
+            /**
+             * Adding transactions to the recyclerView
+             * @param dataSnapshot
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 transactions.clear();
                 double balance = 0;
+                //Going through expenses
                 for (DataSnapshot ds : dataSnapshot.child(wallet_name).child("Expenses").getChildren()) {
                     Transaction transaction = ds.getValue(Transaction.class);
                     if(transaction.getDate().compareTo(date) <= 0){
@@ -187,6 +182,7 @@ public class TransactionsFragment extends Fragment {
                         balance -= transaction.getAmount();
                     }
                 }
+                //Going through incomes
                 for (DataSnapshot ds : dataSnapshot.child(wallet_name).child("Incomes").getChildren()) {
                     Transaction transaction = ds.getValue(Transaction.class);
                     if(transaction.getDate().compareTo(date) <= 0) {
@@ -196,7 +192,6 @@ public class TransactionsFragment extends Fragment {
                         balance += transaction.getAmount();
                     }
                 }
-
                 TextView tv_no_transactions = v.findViewById(R.id.tv_no_transactions);
                 if(transactions.size() == 0){
                     //if there is no transaction to show, set tv_no_transactions visible
@@ -206,7 +201,7 @@ public class TransactionsFragment extends Fragment {
                     //if there are transactions, remove tv_no_transactions
                     tv_no_transactions.setVisibility(View.GONE);
                 }
-
+                //Sorting data by the got date
                 Collections.sort(transactions, new Comparator<Transaction>() {
                     @Override
                     public int compare(Transaction o1, Transaction o2) {
@@ -227,6 +222,7 @@ public class TransactionsFragment extends Fragment {
                         return date2.compareTo(date1);
                     }
                 });
+                //Setting adapter
                 RecyclerView.Adapter adapter = new TransactionsAdapter(context, transactions);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(layoutManager);

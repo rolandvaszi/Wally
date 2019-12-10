@@ -5,31 +5,33 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
 import com.example.wally.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationBar);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+            /**
+             * Getting selected menu item, every item has it's own fragment
+             * which will be replaced
+             * @param item
+             * @return
+             */
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -37,33 +39,27 @@ public class MainActivity extends AppCompatActivity {
                         bottomNavigationView.getMenu().getItem(0).setChecked(true);
                         bottomNavigationView.getMenu().getItem(1).setChecked(false);
                         bottomNavigationView.getMenu().getItem(2).setChecked(false);
-
                         FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new OverviewFragment());
                         frag_trans.commit();
-
                         break;
                     }
                     case R.id.action_transactions: {
                         bottomNavigationView.getMenu().getItem(0).setChecked(false);
                         bottomNavigationView.getMenu().getItem(1).setChecked(true);
                         bottomNavigationView.getMenu().getItem(2).setChecked(false);
-
                         FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new TransactionsFragment());
                         frag_trans.commit();
-
                         break;
                     }
                     case R.id.action_wallets: {
                         bottomNavigationView.getMenu().getItem(0).setChecked(false);
                         bottomNavigationView.getMenu().getItem(1).setChecked(false);
                         bottomNavigationView.getMenu().getItem(2).setChecked(true);
-
                         FragmentTransaction frag_trans = getSupportFragmentManager().beginTransaction();
                         frag_trans.replace(R.id.fragment_container,new WalletsFragment());
                         frag_trans.commit();
-
                         break;
                     }
                 }
@@ -73,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.action_transactions);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
-
         //if keyboard is showing set bottomNavigationBar's visibility to GONE
         final ConstraintLayout constraintLayout=findViewById(R.id.rootView);
         constraintLayout.getViewTreeObserver().addOnGlobalLayoutListener(new             ViewTreeObserver.OnGlobalLayoutListener() {
@@ -84,10 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 int screenHeight = constraintLayout.getRootView().getHeight();
                 int keypadHeight = screenHeight - r.bottom;
                 if (keypadHeight > screenHeight * 0.15) {
-                    //Toast.makeText(MainActivity.this,"Keyboard is showing",Toast.LENGTH_LONG).show();
                     bottomNavigationView.setVisibility(View.GONE);
                 } else {
-                    //Toast.makeText(MainActivity.this,"keyboard closed",Toast.LENGTH_LONG).show();
                     bottomNavigationView.setVisibility(View.VISIBLE);
                 }
             }
@@ -95,10 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Log out and exit handling
+     */
     @Override
     public void onBackPressed() {
-        //log_out();
-//        finish();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
         alertDialog.setMessage("Are you sure you want to exit?").setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
@@ -113,10 +107,12 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+        //Creates and shows the alert
         AlertDialog alert = alertDialog.create();
         alert.show();
     }
 
+    //Data for income category spinner
     public ArrayList<String> getIncomeCategories(){
         ArrayList<String> income_categories = new ArrayList<>();
         income_categories.add("Gift");
@@ -124,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         return income_categories;
     }
 
+    //Data for expense category spinner
     public ArrayList<String> getExpenseCategories(){
         ArrayList<String> expense_categories = new ArrayList<>();
         expense_categories.add("Gift");
@@ -137,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         return expense_categories;
     }
 
+    //Icons for the categories
     public Map<String, Integer> getImages() {
         Map<String, Integer> images = new HashMap<>();
         images.put("Gift", R.drawable.gift);

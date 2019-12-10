@@ -2,8 +2,8 @@ package com.example.wally.Model;
 
 public class DropDownItem {
 
-    String text;
-    Integer imageId;
+    private String text;
+    private Integer imageId;
 
     public DropDownItem(String text, Integer imageId){
         this.text = text;

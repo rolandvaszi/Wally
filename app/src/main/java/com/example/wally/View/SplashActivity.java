@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
 import com.example.wally.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -17,6 +16,9 @@ public class SplashActivity extends AppCompatActivity {
 
         int secondsDelayed = 2;
         new Handler().postDelayed(new Runnable() {
+            /**
+             * Starting splash screen
+             */
             public void run() {
                 Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(mainIntent);

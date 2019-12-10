@@ -24,36 +24,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:layout_marginTop="492dp"
         android:layout_marginEnd="32dp"
         android:elevation="6dp"
         android:src="@drawable/exp_icon_4"
         android:visibility="invisible"
         app:backgroundTint="#6F7274"
-        app:layout_constraintBottom_toTopOf="@+id/fab_add2"
+        app:layout_constraintBottom_toTopOf="@+id/fab_add1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/trans_rv"
-        app:layout_constraintVertical_bias="0.982"
-        app:pressedTranslationZ="12dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="32dp"
-        android:elevation="6dp"
-        android:src="@drawable/exp_icon_3"
-        android:visibility="invisible"
-        app:backgroundTint="#6F7274"
-        app:layout_constraintBottom_toBottomOf="@+id/trans_rv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.947"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/trans_rv"
-        app:layout_constraintVertical_bias="0.694"
+        app:layout_constraintVertical_bias="1.0"
         app:pressedTranslationZ="12dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -63,16 +45,15 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
         android:elevation="6dp"
         android:src="@drawable/exp_icon_2"
         android:visibility="invisible"
         app:backgroundTint="#6F7274"
-        app:layout_constraintBottom_toBottomOf="@+id/trans_rv"
+        app:layout_constraintBottom_toTopOf="@+id/fab_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintHorizontal_bias="0.947"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fab_add2"
-        app:layout_constraintVertical_bias="0.076"
         app:pressedTranslationZ="12dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -89,7 +70,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fab_add1"
         app:pressedTranslationZ="12dp" />
 
     <TextView

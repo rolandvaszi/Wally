@@ -1,40 +1,26 @@
 package com.example.wally.View;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import com.example.wally.Model.Transaction;
-import com.example.wally.Presenter.TransactionsAdapter;
 import com.example.wally.Presenter.WalletsAdapter;
 import com.example.wally.R;
-import com.example.wally.View.AddWalletFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 public class WalletsFragment extends Fragment {
     private Context context;
@@ -51,8 +37,7 @@ public class WalletsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_wallets, container, false);
 
-        // *** open AddWalletFragment when user clicks + ***
-
+        //Open AddWalletFragment when user clicks "+"
         FloatingActionButton btn_add_wallet = v.findViewById(R.id.add_wallet_fab);
         btn_add_wallet.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -63,8 +48,7 @@ public class WalletsFragment extends Fragment {
             }
         });
 
-        // *** set wallet-recyclerview ***
-
+        //Set wallet-recyclerView
         final RecyclerView recyclerView = v.findViewById(R.id.wallets_rv);
         recyclerView.setHasFixedSize(true);
 
@@ -80,10 +64,16 @@ public class WalletsFragment extends Fragment {
         final ArrayList<String> amounts = new ArrayList<>();
 
         myRef.addValueEventListener(new ValueEventListener() {
+
+            /**
+             * Populate recyclerView with wallets
+             * @param dataSnapshot
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 wallets.clear();
                 amounts.clear();
+                //Going through the wallets
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String wallet_name = ds.getKey(); //the wallet_name is the key
                     String amount = ds.child("Amount").getValue().toString();
