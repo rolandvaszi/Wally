@@ -109,7 +109,6 @@ public class AddTransactionFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
-        //mainSpinner = (Spinner)v.findViewById(R.id.income_sp);
 
         mySwitch = (Switch)v.findViewById(R.id.switch1);
 
@@ -137,33 +136,6 @@ public class AddTransactionFragment extends Fragment {
         });
 
 
-//        mainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String itemSelect = mainCategories[position];
-//                if(position == 1) {
-////                    ArrayAdapter<String> adapter1 =
-////                            new ArrayAdapter<>(getContext(),
-////                                    android.R.layout.simple_spinner_dropdown_item, income_categories);
-////                    categorySpinner.setAdapter(adapter1);
-//                    SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,income_cat);
-//                    categorySpinner.setAdapter(adapter1);
-//                }
-//                if(position == 0) {
-////                    ArrayAdapter<String> adapter2 =
-////                            new ArrayAdapter<>(getContext(),
-////                                    android.R.layout.simple_spinner_dropdown_item, expense_categories);
-////                    categorySpinner.setAdapter(adapter2);
-//                    SpinnerAdapter adapter1 = new com.example.wally.Presenter.SpinnerAdapter(getContext(),R.layout.spinner_layout,R.id.txt,expense_cat);
-//                    categorySpinner.setAdapter(adapter1);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         // *** go back to TransactionsFragment when user clicks Add ***
 
@@ -249,7 +221,4 @@ public class AddTransactionFragment extends Fragment {
         return v;
     }
 
-    public void displayToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 }

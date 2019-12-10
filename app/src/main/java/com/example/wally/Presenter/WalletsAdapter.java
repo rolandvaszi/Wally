@@ -116,14 +116,16 @@ public class WalletsAdapter extends RecyclerView.Adapter<WalletsAdapter.WalletsV
                                             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                                             String phone_number = sharedPref.getString(context.getString(R.string.phone_number),"Phone Number");
 
-                                            FirebaseDatabase db = FirebaseDatabase.getInstance();
-                                            DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name);
-                                            myRef.removeValue();
-
                                             wallets.remove(position);
                                             amounts.remove(position);
                                             notifyItemRemoved(position);
                                             notifyItemRangeChanged(position, wallets.size());
+
+                                            FirebaseDatabase db = FirebaseDatabase.getInstance();
+                                            DatabaseReference myRef = db.getReference().child(phone_number).child("Wallets").child(wallet_name);
+                                            myRef.removeValue();
+
+
                                         }
                                     })
                                     .setNegativeButton("No", new DialogInterface.OnClickListener() {

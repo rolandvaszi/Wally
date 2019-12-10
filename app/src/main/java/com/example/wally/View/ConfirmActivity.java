@@ -237,7 +237,7 @@ public class ConfirmActivity extends AppCompatActivity {
             String code = phoneAuthCredential.getSmsCode();
             if (code!=null){
                 confirmCode.setText(code);
-                verifyCode(code);
+                //verifyCode(code);
             }
         }
 
