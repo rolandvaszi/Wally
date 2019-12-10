@@ -3,11 +3,15 @@ package com.example.wally.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.example.wally.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,6 +73,26 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.action_transactions);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
+
+        //if keyboard is showing set bottomNavigationBar's visibility to GONE
+        final ConstraintLayout constraintLayout=findViewById(R.id.rootView);
+        constraintLayout.getViewTreeObserver().addOnGlobalLayoutListener(new             ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                constraintLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = constraintLayout.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+                if (keypadHeight > screenHeight * 0.15) {
+                    //Toast.makeText(MainActivity.this,"Keyboard is showing",Toast.LENGTH_LONG).show();
+                    bottomNavigationView.setVisibility(View.GONE);
+                } else {
+                    //Toast.makeText(MainActivity.this,"keyboard closed",Toast.LENGTH_LONG).show();
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     @Override
